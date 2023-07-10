@@ -1,0 +1,1201 @@
+{
+    "schemes": [],
+    "swagger": "2.0",
+    "info": {
+        "description": "",
+        "title": "",
+        "contact": {},
+        "version": ""
+    },
+    "host": "",
+    "basePath": "",
+    "paths": {
+        "/cleanup": {
+            "delete": {
+                "description": "Delete all rollouts and tags information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Force Cleanup all data",
+                        "name": "force_cleanup",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deleted rollouts and tags Info",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/rollback": {
+            "post": {
+                "description": "Start rollback tenants: rollback how many tenants was received",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Rollback"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Tenant IDs to roll back",
+                        "name": "rollbackRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.DeploymentRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Tenant deployment status",
+                        "schema": {
+                            "$ref": "#/definitions/models.Deployment"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Tenant ID not found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/rollouts": {
+            "post": {
+                "description": "Start rollout tenants: rollout how many tenants was received",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Rollouts"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Tenant IDs to roll out",
+                        "name": "rolloutRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.DeploymentRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Tenant rollout status",
+                        "schema": {
+                            "$ref": "#/definitions/models.Deployment"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Tenant ID not found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/rollouts/rules/{ruleName}": {
+            "get": {
+                "description": "Get rollout rules",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Rollouts"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Rule Name",
+                        "name": "ruleName",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Optional continuation token",
+                        "name": "continuationToken",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Response",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/models.PaginatedResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "records": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/models.Deployment"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "204": {
+                        "description": "Empty result",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Rollout not found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/rollouts/tenants/{tenantId}": {
+            "get": {
+                "description": "Get tenant status details",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Rollouts"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Tenant ID",
+                        "name": "tenantId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Optional continuation token",
+                        "name": "continuationToken",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Response",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/models.PaginatedResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "records": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/models.Deployment"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/rollouts/tenants/{tenantId}/cells/{cellId}": {
+            "get": {
+                "description": "Get cell status details",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Rollouts"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Tenant Id",
+                        "name": "tenantId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Cell Id",
+                        "name": "cellId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Optional continuation token",
+                        "name": "continuationToken",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Response",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/models.PaginatedResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "records": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/models.Deployment"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "204": {
+                        "description": "Empty result",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/rollouts/{id}": {
+            "get": {
+                "description": "Get rollout details",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Rollouts"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Rollout Id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Rollout details",
+                        "schema": {
+                            "$ref": "#/definitions/models.Deployment"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Rollout not found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/ruleExecutions": {
+            "post": {
+                "description": "Trigger execution of a Rule",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Rule executions"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.StartRuleExecutionRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Rule rollout ID",
+                        "schema": {
+                            "$ref": "#/definitions/models.ExecutionIdResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Rule name not found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/ruleExecutions/{id}": {
+            "get": {
+                "description": "Get rule execution status for a specific execution ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Rule executions"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Rule execution ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Execution status",
+                        "schema": {
+                            "$ref": "#/definitions/models.RuleExecutionStatus"
+                        }
+                    },
+                    "404": {
+                        "description": "Execution not found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/rules": {
+            "get": {
+                "description": "List rules",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Rules"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Optional continuation token",
+                        "name": "continuationToken",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Response",
+                        "schema": {
+                            "$ref": "#/definitions/command.RulesPaginatedResponse"
+                        }
+                    },
+                    "204": {
+                        "description": "Empty result",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create rollout rule",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Rules"
+                ],
+                "summary": "Create rollout rule",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Rule details",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/command.CreateRuleRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Rule name",
+                        "schema": {
+                            "$ref": "#/definitions/command.RuleNameResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/rules/{rule}": {
+            "get": {
+                "description": "Get rollout rule",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Rules"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Rule name",
+                        "name": "rule",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Rule",
+                        "schema": {
+                            "$ref": "#/definitions/command.GetRuleResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Rule not found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update rollout rule",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Rules"
+                ],
+                "summary": "Update rollout rule",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Rule name",
+                        "name": "rule",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Rule details",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/command.UpdateRuleRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Updated Rule",
+                        "schema": {
+                            "$ref": "#/definitions/command.UpdateRuleRequest"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "command.CreateRuleRequest": {
+            "type": "object",
+            "properties": {
+                "doc": {
+                    "type": "string"
+                }
+            }
+        },
+        "command.GetRuleResponse": {
+            "type": "object",
+            "properties": {
+                "doc": {
+                    "type": "string"
+                },
+                "rule": {
+                    "type": "string"
+                }
+            }
+        },
+        "command.RuleNameResponse": {
+            "type": "object",
+            "properties": {
+                "rule": {
+                    "type": "string"
+                }
+            }
+        },
+        "command.RulesPaginatedResponse": {
+            "type": "object",
+            "properties": {
+                "continuationToken": {
+                    "type": "string"
+                },
+                "records": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/command.GetRuleResponse"
+                    }
+                }
+            }
+        },
+        "command.UpdateRuleRequest": {
+            "type": "object",
+            "properties": {
+                "doc": {
+                    "type": "string"
+                },
+                "ruleName": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.ActionExecutionStatus": {
+            "description": "The status of a specific action executing for a cell",
+            "type": "object",
+            "properties": {
+                "command": {
+                    "type": "string"
+                },
+                "details": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.CellDeployment": {
+            "type": "object",
+            "properties": {
+                "app": {
+                    "type": "string"
+                },
+                "cellState": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "finished": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "infra": {
+                    "type": "string"
+                },
+                "lastDetailStatusReceived": {
+                    "type": "string"
+                },
+                "started": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "statusMessage": {
+                    "type": "string"
+                },
+                "updated": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.CellExecutionStatus": {
+            "description": "The status of a specific cell executing for a tenant",
+            "type": "object",
+            "properties": {
+                "actions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.ActionExecutionStatus"
+                    }
+                },
+                "cellId": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Deployment": {
+            "type": "object",
+            "properties": {
+                "created": {
+                    "type": "string"
+                },
+                "createdBy": {
+                    "type": "string"
+                },
+                "deploymentType": {
+                    "type": "string"
+                },
+                "finished": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "modified": {
+                    "type": "string"
+                },
+                "modifiedBy": {
+                    "type": "string"
+                },
+                "rule": {
+                    "type": "string"
+                },
+                "started": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "tenants": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.TenantDeployment"
+                    }
+                },
+                "updated": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.DeploymentRequest": {
+            "description": "Deployment request containing tenants to deploy",
+            "type": "object",
+            "properties": {
+                "rule": {
+                    "type": "string"
+                },
+                "tenants": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.TenantDeploymentRequest"
+                    }
+                }
+            }
+        },
+        "models.ExecutionIdResponse": {
+            "description": "Execution ID for triggered execution",
+            "type": "object",
+            "properties": {
+                "executionId": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.PaginatedResponse": {
+            "description": "Paginated response containing response records and optional continuation token",
+            "type": "object",
+            "properties": {
+                "continuationToken": {
+                    "type": "string"
+                },
+                "records": {}
+            }
+        },
+        "models.RuleExecutionStatus": {
+            "description": "The status of a rule execution",
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "executionId": {
+                    "type": "string"
+                },
+                "rule": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "strategy": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.StepExecutionStatus"
+                    }
+                }
+            }
+        },
+        "models.StartRuleExecutionRequest": {
+            "description": "Request format for starting the execution of a rule by name",
+            "type": "object",
+            "required": [
+                "rule"
+            ],
+            "properties": {
+                "rule": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.StepExecutionStatus": {
+            "description": "The status of a specific step executing for a rule",
+            "type": "object",
+            "properties": {
+                "filters": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "needs": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": true
+                    }
+                },
+                "order": {
+                    "type": "integer"
+                },
+                "parallel": {
+                    "type": "boolean"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "step": {
+                    "type": "string"
+                },
+                "stopOnTenantFail": {
+                    "type": "boolean"
+                },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "targetCell": {
+                    "type": "string"
+                },
+                "tenants": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.TenantExecutionStatus"
+                    }
+                },
+                "waitSeconds": {
+                    "type": "integer"
+                },
+                "when": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.TenantDeployment": {
+            "type": "object",
+            "properties": {
+                "cells": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.CellDeployment"
+                    }
+                },
+                "finished": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "started": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "statusMessage": {
+                    "type": "string"
+                },
+                "tenantState": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "updated": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.TenantDeploymentRequest": {
+            "description": "Deployment details for a specific tenant",
+            "type": "object",
+            "properties": {
+                "accountId": {
+                    "type": "string"
+                },
+                "app": {
+                    "type": "string",
+                    "enum": [
+                        "apply",
+                        "drop",
+                        "skip"
+                    ]
+                },
+                "cellIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "infra": {
+                    "type": "string",
+                    "enum": [
+                        "apply",
+                        "drop",
+                        "recreate",
+                        "skip"
+                    ]
+                }
+            }
+        },
+        "models.TenantExecutionStatus": {
+            "description": "The status of a specific tenant executing for a step",
+            "type": "object",
+            "properties": {
+                "accountId": {
+                    "type": "string"
+                },
+                "cells": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.CellExecutionStatus"
+                    }
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
